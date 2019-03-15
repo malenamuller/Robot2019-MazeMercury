@@ -11,6 +11,7 @@
 #include "step.h"
 
 #include "board.h"
+#include "Pin.h" //Agregamos esto
 #include "PORT.h"
 #include "GPIO.h"
 #include "FTM.h"
@@ -169,6 +170,30 @@ void Step_Run(stepId_t id, uint32_t period_us, stepDir_t dir)
 		stepPeriod[id] = period_us;
 		period_us = STEP_US2SEMICOUNT(period_us);
 		stepDir[id]=dir;//AGREGO ESTO!
+		///////////
+		if(dir==STEPDIR_ADELANTE)
+		{
+			if(id==STEPID_MOT_IZQ)
+			{
+				Pin_Clear(PIN_MOT_IZQ_MINUS);
+			}
+			else if(id==STEPID_MOT_DER)
+			{
+				Pin_Clear(PIN_MOT_DER_MINUS);
+			}
+		}
+		else if(dir==STEPDIR_ATRAS)
+		{
+			if(id==STEPID_MOT_IZQ)
+			{
+				Pin_Set(PIN_MOT_IZQ_MINUS);
+			}
+			else if(id==STEPID_MOT_DER)
+			{
+				Pin_Set(PIN_MOT_DER_MINUS);
+			}
+		}
+		// AGREGO HASTA ACA! Esto hay que acomodarlo
 		stepSemiCount[id] = period_us; // esto debe ser atomic!!
 
 		if (!stepRunning[id])

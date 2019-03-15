@@ -64,8 +64,8 @@ static const pinConfig_t pinList[CANT_PINS] = {
 	{ PORTC, PTC, 6, PIN_IN_PULLUP, GPIO__IN, GPIO__LO, GPIO__HI }, // PIN_SW2
 	{ PORTA, PTA, 4, PIN_IN_PULLUP, GPIO__IN, GPIO__LO, GPIO__HI }, // PIN_SW3
 
-	{ PORTC, PTC, 2, PIN_PORT_SIMPLE, GPIO__OUT, GPIO__HI, GPIO__LO }, // PIN_MOT_IZQ_MINUS
-	{ PORTC, PTC, 8, PIN_PORT_SIMPLE, GPIO__OUT, GPIO__HI, GPIO__LO }, // PIN_MOT_DER_MINUS
+	{ PORTB, PTB, 10, PIN_PORT_SIMPLE, GPIO__OUT, GPIO__HI, GPIO__LO }, // PIN_MOT_IZQ_MINUS
+	{ PORTB, PTB, 11, PIN_PORT_SIMPLE, GPIO__OUT, GPIO__HI, GPIO__LO }, // PIN_MOT_DER_MINUS
 };
 
 /*******************************************************************************

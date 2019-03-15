@@ -38,6 +38,7 @@
 
 
 #if (SERVO_MOD_FREQ_HZ == 50) && (SERVO_MOD_VAL == 62500)
+#define SERVO_US2COUNT(us)	((((uint32_t)(us))*25+(1<<2))>>3)
 #endif
 #define _CONCAT2(a,b)			a##b
 #define CONCAT2(a,b)			_CONCAT2(a,b)
@@ -75,7 +76,7 @@ typedef struct {
  ******************************************************************************/
 
 static const servoConfig_t servoList[CANT_SERVOIDS] = {
-	{ PORTC, 1, PWM_PIN_PORT_ALT4, 0, 1500 }, // SERVOID_DIRECTION
+		   { PORTC, 1, PWM_PIN_PORT_ALT4, 0, 1500 }, // SERVOID_DIRECTION
 };
 
 #if PIN_SERVO_DIR != PORTPINNUM2PIN(PC,1)
@@ -124,7 +125,7 @@ void Servo_Init (void)
 	{
 		FTM_SetWorkingMode(SERVO_FTM_PTR, servo->ch, FTM_mPulseWidthModulation); // PWM
 		FTM_SetOutputCompareEffect (SERVO_FTM_PTR, servo->ch, FTM_eClear);
-		//FTM_SetCounter(SERVO_FTM_PTR, servo->ch, SERVO_US2COUNT(servo->ton_init)); //COMENTAMOS ESTO porque no esta definido SERVO_US2COUNT
+		FTM_SetCounter(SERVO_FTM_PTR, servo->ch, SERVO_US2COUNT(servo->ton_init)); //COMENTAMOS ESTO porque no esta definido SERVO_US2COUNT
 		servoWidth[servoList-servo] = servo->ton_init;
 	}
 

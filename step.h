@@ -12,6 +12,7 @@
  ******************************************************************************/
 
 #include "common.h"
+#include "Pin.h" //Agregamos esto
 
 
 /*******************************************************************************
@@ -43,8 +44,8 @@ typedef enum {
 
 
 typedef enum {
-	STEPDIR_ADELANTE,
 	STEPDIR_ATRAS,
+	STEPDIR_ADELANTE,
 	CANT_STEPDIR,
 } stepDir_t;
 

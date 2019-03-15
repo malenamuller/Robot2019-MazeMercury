@@ -29,6 +29,7 @@ static uint8_t timerJoy;
 static void fbut1(int value);
 static void fbut3(int value);
 static void fbut4(int value);
+static void fbutPadX(int value);
 
 
 void App_Init (void)
@@ -61,7 +62,8 @@ void App_Init (void)
 	pfbut = fbut4;
 	joy_RegisterCallbackAction(JOY_ID_BUT_PINK4, pfbut);
 
-
+	pfbut = fbutPadX;
+		joy_RegisterCallbackAction(JOY_ID_AXIS_PADX, pfbut);
 }
 
 
@@ -76,7 +78,8 @@ void App_Run (void) //Esto vendría a ser como un main
 {
 	Comm_Update();	//Si se recibe algo del joystick, pone new_joy_msg en true.
 
-
+	//Step_Run(STEPID_MOT_IZQ, 2500, STEPDIR_ADELANTE);
+	//Step_Run(STEPID_MOT_DER, 2500, STEPDIR_ADELANTE);
 	if (Comm_ReadJoyMsg(joy_msg) && joy_ParseMessage(joy_msg)) //Si new_joy_msg == true, ReadyJoyMsg copia el msg recibido y devuelve true.
 	{
 #ifdef DEBUG_APP_ENA
@@ -110,22 +113,44 @@ void App_Run (void) //Esto vendría a ser como un main
 }
 
 
-static void fbut1(int value)			// Boton 1 verde
+static void fbut1(int value)			// Boton 1 verde: retrocede.
 {
 	//USAR EL value que se recibe, en lugar de 2500, para hacerlo analogico
  Step_Run(STEPID_MOT_IZQ, 2500, STEPDIR_ATRAS);
  Step_Run(STEPID_MOT_DER, 2500, STEPDIR_ATRAS);
-
 }
 
-static void fbut3(int value)			// Boton 3 Celeste
+static void fbut3(int value)			// Boton 3 Celeste: avanza hacia adelante.
 {
 	 Step_Run(STEPID_MOT_IZQ, 2500, STEPDIR_ADELANTE);
 	 Step_Run(STEPID_MOT_DER, 2500, STEPDIR_ADELANTE);
 }
 
-static void fbut4(int value)			// Boton 4 Rosa
+static void fbut4(int value)			// Boton 4 Rosa: frena.
 {
 	 Step_Run(STEPID_MOT_IZQ, 0, STEPDIR_ADELANTE);
 	 Step_Run(STEPID_MOT_DER, 0, STEPDIR_ADELANTE);
 }
+
+
+//Recibe valor correspondiente a izq o der en value
+//0: izq
+//127: adelante (no se presionó nada)
+//255: derecha
+static void fbutPadX(int value)			// Boton 4 Rosa: frena.
+{
+	switch (value)
+	{
+		case 0: //HACER UN DEFINE PARA ESTOS VALORES ASI LOS PODEMOS MODIFICAR FACILMENTE:
+			Servo_SetWidth(SERVOID_DIRECTION, 2270); //2,27ms = 2270us (HACER DEFINE PARA ESTOS VALORES!!!!!!)
+			break;
+		case 127:
+			Servo_SetWidth(SERVOID_DIRECTION, 1330); //1,33ms = 1330us
+			break;
+		case 255:
+			Servo_SetWidth(SERVOID_DIRECTION, 460); //0,46ms = 460us
+			break;
+	}
+}
+
+
